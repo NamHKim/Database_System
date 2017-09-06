@@ -1,9 +1,10 @@
+import java.util.*;
 
 public class B_Tree
 {
 
-	static private int max_size = 2;
-	static private Node root = null;
+	private int max_size = 2;
+	private Node root = null;
 	static int depth = 0;
 	
 	
@@ -13,6 +14,7 @@ public class B_Tree
 		if (root == null)
 			root = new Node(max_size);
 		depth = 1;
+		System.out.println("Set complite");
 	}
 
 	public Node search(String key, char command)
@@ -58,29 +60,30 @@ public class B_Tree
 		}
 		return tmp;
 	}
-	public void split(Node current)
+	
+	public void split(Node n)
 	{
-		int n = (max_size+1)/2;
+		int num = (max_size+1)/2;
 		Node New_Node = new Node(max_size);
 		
 		for(int i=0;i<max_size/2;i++)
 		{
-			New_Node.index[i] = current.index[n+i];
-			current.index[n+i] = null;
+			New_Node.index[i] = n.index[num+i];
+			n.index[num+i] = null;
 		}
-		current.size = n;
+		n.size = num;
 		New_Node.size = max_size/2;
 		
-		if(current.parents != null)
+		if(n.parents != null)
 		{
-			current.parents.insert(New_Node);
-			if(current.parents.size>max_size)
-				split(current.parents);
+			n.parents.insert(New_Node);
+			if(n.parents.size>max_size)
+				split(n.parents);
 		}
 		else//parents가 없으면 root 노드이므로 새로운 root를 할당해줘야한다.
 		{
 			Node New_root = new Node(max_size);
-			New_root.index[0]=current;
+			New_root.index[0]=n;
 			New_root.index[1]=New_Node;
 			New_root.size=2;
 			root = New_root;
@@ -100,10 +103,46 @@ public class B_Tree
 			split(tmp);
 	}
 
-	public void Delete(String key, String data)
+	public void erase(Node n)
+	{
+		Node tmp = n.parents;
+		tmp.delete(n);
+		if(tmp.size == 0 && tmp.parents !=null)
+			erase(tmp.parents);
+	}
+	public void Delete(String key)
 	{
 		int k = Integer.parseInt(key);
-		int dt = Integer.parseInt(data);
+		
+		Node tmp = search(key,'d');
+		
+		tmp.delete(k);
+		
+		if(tmp.size == 0 && tmp.parents != null)
+			erase(tmp);
 	}
 
+	public void print()
+	{
+		Queue<Node> a = new LinkedList<Node>();
+		a.add(root);
+		
+		for(int i=0;i<depth;i++)
+		{
+			int t = a.size();
+			for(int k=0;k<t;k++)
+			{
+				Node n = a.poll();
+				if(n == null) continue;
+			
+				for(int j=0;j<n.size;j++)
+				{
+					a.add(n.index[j]);
+					System.out.print(n.key+" ");
+				}
+				System.out.print("|");
+			}
+			System.out.println();
+		}
+	}
 }

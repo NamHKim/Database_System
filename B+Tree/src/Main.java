@@ -23,7 +23,7 @@ public class Main
 					if (command == 'i')
 						dest.insert(field[0], field[1]);
 					else if (command == 'd')
-						dest.Delete(field[0], field[1]);
+						dest.Delete(field[0]);
 					else if (command == 's')
 						dest.search(arg,'s');
 				}
@@ -36,8 +36,46 @@ public class Main
 		}
 	}
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException
 	{
+		boolean test = true;
+	
+
+		if(test)
+		{	
+			System.out.println("Test mode");
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			String s=br.readLine();
+			int n = Integer.parseInt(s);
+		
+			tree.set_Tree(n);
+			
+			while ((s = br.readLine()) != null)
+			{
+				String[] field = s.split(",");
+				for(int i=0;i<3;i++)
+				{
+					if(field!=null);
+					System.out.println(field[i]);
+				}
+				if(field[0] == "i")
+				{
+					tree.insert(field[1], field[2]);
+					tree.print();
+				}
+				else if(field[1] == "d")
+				{
+					tree.Delete(field[1]);
+					tree.print();
+				}
+				else if(field[2] == "s")
+				{
+					tree.search(field[1], 's');
+				}
+				if(field[0] == "f") return;
+			}
+		}
+		
 		if (args[0].charAt(1) == 'c') // index.dat 파일을 생성하는 명령
 		{
 			try

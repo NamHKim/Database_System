@@ -29,6 +29,7 @@ public class Node {
 		
 		for(int i=0;i<size;i++)
 		{
+			if(k == index[i].key) return;//같은 키값을 가지고 있는 입력값은 무시한다.
 			if(k < index[i].key)
 			{
 				for(int j=size;j>i;j--)
@@ -44,7 +45,7 @@ public class Node {
 	{
 		for(int i=0;i<size;i++)
 		{
-			if(n.key < index[i].key)
+			if(n.key < index[i].key)//같은 키값이 들어올 수 없다.(split시에만 사용됨)
 			{
 				for(int j=size;j>i;j--)
 					index[j] = index[j - 1];
@@ -54,5 +55,35 @@ public class Node {
 			}
 		}
 		size++;
+	}
+	public void delete(int k)
+	{
+		for(int i=0;i<size;i++)
+		{
+			if(k == index[i].key)
+			{
+				for(int j=i;j<size-1;j++)
+				{
+					index[j]=index[j+1];
+				}
+				break;
+			}
+		}
+		size--;
+	}
+	public void delete(Node n)
+	{
+		for(int i=0;i<size;i++)
+		{
+			if(n.key == index[i].key)
+			{
+				for(int j=i;j<size-1;j++)
+				{
+					index[j]=index[j+1];
+				}
+				break;
+			}
+		}
+		size--;
 	}
 }
